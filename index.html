@@ -170,7 +170,7 @@
               <span class="post-meta-item-text">Veröffentlicht am</span>
               
 
-              <time title="Erstellt: 2023-09-08 09:25:05 / Geändert am: 15:13:07" itemprop="dateCreated datePublished" datetime="2023-09-08T09:25:05+08:00">2023-09-08</time>
+              <time title="Erstellt: 2023-09-08 09:25:05 / Geändert am: 15:28:43" itemprop="dateCreated datePublished" datetime="2023-09-08T09:25:05+08:00">2023-09-08</time>
             </span>
 
           
@@ -187,11 +187,16 @@
           <h1 id="AngularMaterial"><a href="#AngularMaterial" class="headerlink" title="AngularMaterial"></a>AngularMaterial</h1><h4 id="Material是Angular中的UI框架，和angular一樣是google推出的，因此穩定性和相容會和angular最契合"><a href="#Material是Angular中的UI框架，和angular一樣是google推出的，因此穩定性和相容會和angular最契合" class="headerlink" title="Material是Angular中的UI框架，和angular一樣是google推出的，因此穩定性和相容會和angular最契合"></a>Material是Angular中的UI框架，和angular一樣是google推出的，因此穩定性和相容會和angular最契合</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ng add @angular/material</span><br><span class="line">ng add @angular/cdk </span><br><span class="line">// 安裝CDK (Component Dev Kit)</span><br></pre></td></tr></table></figure>
 
 <p>可以使用的元件可以參考官方文件<br>[<a target="_blank" rel="noopener" href="https://material.angular.tw/components/categories]">https://material.angular.tw/components/categories]</a></p>
-<p>從 Mat-Chip-Option元件中取值<br>可以使用 selectionChange來取值<br>(selectionChange)&#x3D;”方法($event)”</p>
+<p>從 Mat-Chip-Option元件中取值<br>可以使用 selectionChange來取值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;mat-chip-listbox aria-label=&quot;weather selection&quot;&gt;</span><br><span class="line">  &lt;mat-chip-option *ngFor = &quot;let Choose of weatherChoose&quot; (selectionChange)=&quot;onSelectionChange($event)&quot;&gt;&#123;&#123; Choose &#125;&#125;&lt;/mat-chip-option&gt;</span><br><span class="line">&lt;/mat-chip-listbox&gt;</span><br></pre></td></tr></table></figure>
+
+<p>而我的陣列是很簡單的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">todayWeather = &#x27;&#x27;; // 顯示出被選擇的天氣</span><br><span class="line"></span><br><span class="line">weatherChoose = [ </span><br><span class="line">  &#x27;陰天&#x27;,</span><br><span class="line">  &#x27;晴天&#x27;,</span><br><span class="line">  &#x27;雨天&#x27;,</span><br><span class="line">  &#x27;強風&#x27;,</span><br><span class="line">];  // 天氣陣列</span><br><span class="line"></span><br><span class="line">// onSelectionChange，綁定在selectionChange事件的方法，要傳入event參數來讀取值</span><br><span class="line">onSelectionChange(event: MatChipSelectionChange) &#123;</span><br><span class="line">  if (event.selected) &#123;   // 讀取被選到的值</span><br><span class="line">    const selectedValue = event.source.value; // 將值取出</span><br><span class="line">    this.todayWeather = selectedValue; //將值傳到被選擇的地方，再透過模板顯示</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
 <p>方法 </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">方法名稱(event: MatChipSelectionChange) &#123;</span><br><span class="line">  if (event.selected) &#123;</span><br><span class="line">    const selectedValue = event.source.value;</span><br><span class="line">    console.log(&#x27;Selected value:&#x27;, selectedValue);</span><br><span class="line">    // 這邊可以讀取選定值</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
+<p>簡單的結果如下<br><img src="/image.png" alt="Alt text"></p>
 
       
     </div>
