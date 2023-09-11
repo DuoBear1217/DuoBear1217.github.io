@@ -28,7 +28,7 @@
 <meta property="og:description" content="Angular路由首先要先簡單了解一下SPA以及MPA SPA (single-page Application) 單頁面應用優: 響應速度快、行動裝置友善，便利性高缺: SEO(Search Engine Optimization)不佳，安全性問題，擴展性不佳，沒有瀏覽紀錄 MPA (muti-page Application) 多頁面應用優: SEO，搜尋引擎優化友善，可擴展性佳，容易分析缺:">
 <meta property="og:locale" content="zh_TW">
 <meta property="article:published_time" content="2023-09-11T09:14:47.000Z">
-<meta property="article:modified_time" content="2023-09-11T09:53:01.795Z">
+<meta property="article:modified_time" content="2023-09-11T09:53:23.332Z">
 <meta property="article:author" content="John Doe">
 <meta name="twitter:card" content="summary">
 
@@ -85,7 +85,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="تشغيل شريط التصفح">
+    <div class="toggle" aria-label="Navigationsleiste an/ausschalten">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -114,12 +114,12 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Startseite</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archiv</a>
 
   </li>
   </ul>
@@ -171,10 +171,10 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">نُشر في</span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
               
 
-              <time title="أُنشأ: 2023-09-11 17:14:47 / عُدل: 17:53:01" itemprop="dateCreated datePublished" datetime="2023-09-11T17:14:47+08:00">2023-09-11</time>
+              <time title="Erstellt: 2023-09-11 17:14:47 / Geändert am: 17:53:23" itemprop="dateCreated datePublished" datetime="2023-09-11T17:14:47+08:00">2023-09-11</time>
             </span>
 
           
@@ -207,6 +207,7 @@
 <p>app.component.html換成</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;Angular Router App&lt;/h1&gt;</span><br><span class="line">&lt;nav&gt;</span><br><span class="line">  &lt;ul&gt;</span><br><span class="line">    &lt;li&gt;&lt;a routerLink=&quot;/first-component&quot; routerLinkActive=&quot;active&quot; ariaCurrentWhenActive=&quot;page&quot;&gt;First Component&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;&lt;a routerLink=&quot;/second-component&quot; routerLinkActive=&quot;active&quot; ariaCurrentWhenActive=&quot;page&quot;&gt;Second Component&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">  &lt;/ul&gt;</span><br><span class="line">&lt;/nav&gt;</span><br><span class="line">&lt;router-outlet&gt;&lt;/router-outlet&gt;</span><br></pre></td></tr></table></figure>
 <p>再要連結的元素中加入，<strong>routerLink</strong>，後面加上在routes設定的路徑</p>
+<p>未完待補</p>
 
     </div>
 
@@ -275,10 +276,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          المحتويات
+          Inhaltsverzeichnis
         </li>
         <li class="sidebar-nav-overview">
-          عام
+          Übersicht
         </li>
       </ul>
 
@@ -299,7 +300,7 @@
           <a href="/archives/">
         
           <span class="site-state-item-count">3</span>
-          <span class="site-state-item-name">المقالات</span>
+          <span class="site-state-item-name">Artikel</span>
         </a>
       </div>
   </nav>
@@ -332,7 +333,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">John Doe</span>
 </div>
-  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Erstellt mit  <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
         
