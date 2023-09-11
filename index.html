@@ -168,10 +168,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">نُشر في</span>
-              
 
-              <time title="أُنشأ: 2023-09-08 09:25:05 / عُدل: 15:50:55" itemprop="dateCreated datePublished" datetime="2023-09-08T09:25:05+08:00">2023-09-08</time>
+              <time title="أُنشأ: 2023-09-08 09:25:05" itemprop="dateCreated datePublished" datetime="2023-09-08T09:25:05+08:00">2023-09-08</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2023-09-11 10:16:37" itemprop="dateModified" datetime="2023-09-11T10:16:37+08:00">2023-09-11</time>
+              </span>
 
           
 
@@ -187,7 +193,7 @@
           <h1 id="AngularMaterial"><a href="#AngularMaterial" class="headerlink" title="AngularMaterial"></a>AngularMaterial</h1><h4 id="Material是Angular中的UI框架，和angular一樣是google推出的，因此穩定性和相容會和angular最契合"><a href="#Material是Angular中的UI框架，和angular一樣是google推出的，因此穩定性和相容會和angular最契合" class="headerlink" title="Material是Angular中的UI框架，和angular一樣是google推出的，因此穩定性和相容會和angular最契合"></a>Material是Angular中的UI框架，和angular一樣是google推出的，因此穩定性和相容會和angular最契合</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ng add @angular/material</span><br><span class="line">ng add @angular/cdk </span><br><span class="line">// 安裝CDK (Component Dev Kit)</span><br></pre></td></tr></table></figure>
 
 <p>可以使用的元件可以參考官方文件<br>[<a target="_blank" rel="noopener" href="https://material.angular.tw/components/categories]">https://material.angular.tw/components/categories]</a></p>
-<p>從 Mat-Chip-Option元件中取值<br>可以使用 selectionChange來取值</p>
+<p>現在試著從 Mat-Chip-Option元件中取值<br>可以使用 selectionChange來取值</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;mat-chip-listbox aria-label=&quot;weather selection&quot;&gt;</span><br><span class="line">  &lt;mat-chip-option *ngFor = &quot;let Choose of weatherChoose&quot; (selectionChange)=&quot;onSelectionChange($event)&quot;&gt;&#123;&#123; Choose &#125;&#125;&lt;/mat-chip-option&gt;</span><br><span class="line">&lt;/mat-chip-listbox&gt;</span><br></pre></td></tr></table></figure>
 
 <p>而我的陣列是很簡單的</p>
@@ -196,7 +202,12 @@
 <p>方法 </p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// onSelectionChange，綁定在selectionChange事件的方法，要傳入event參數來讀取值</span><br><span class="line">onSelectionChange(event: MatChipSelectionChange) &#123;</span><br><span class="line">  if (event.selected) &#123;   // 讀取被選到的值</span><br><span class="line">    const selectedValue = event.source.value; // 將值取出</span><br><span class="line">    this.todayWeather = selectedValue; //將值傳到被選擇的地方，再透過模板顯示</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-
+<p>而mat相關有可以取值的元件對應的方法如下</p>
+<ul>
+<li>mat-chip-option &lt; &#x3D; &gt; MatChipSelectionChange</li>
+<li>mat-radio-button &lt; &#x3D; &gt; MatRadioChange</li>
+<li>mat-select &lt; &#x3D; &gt; mat-select</li>
+</ul>
 
       
     </div>
