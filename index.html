@@ -81,7 +81,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Navigationsleiste an/ausschalten">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -110,12 +110,12 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Startseite</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archiv</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
 
   </li>
   </ul>
@@ -167,11 +167,17 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
-              
+              <span class="post-meta-item-text">نُشر في</span>
 
-              <time title="Erstellt: 2023-09-11 17:14:47 / Geändert am: 17:53:23" itemprop="dateCreated datePublished" datetime="2023-09-11T17:14:47+08:00">2023-09-11</time>
+              <time title="أُنشأ: 2023-09-11 17:14:47" itemprop="dateCreated datePublished" datetime="2023-09-11T17:14:47+08:00">2023-09-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2023-09-12 08:56:25" itemprop="dateModified" datetime="2023-09-12T08:56:25+08:00">2023-09-12</time>
+              </span>
 
           
 
@@ -197,12 +203,15 @@
 <p>先快速產生兩個component</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ng g c first</span><br><span class="line">ng g c second</span><br></pre></td></tr></table></figure>
 
-<p>然後設定進去路由裡面</p>
+<p>然後設定進去路由裡面<br>app-routing.modules.ts</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const routes: Routes = [</span><br><span class="line">  &#123; path: &#x27;first-component&#x27;, component: FirstComponent&#125;,</span><br><span class="line">  &#123; path: &#x27;second-component&#x27;, component: SecondComponent &#125;,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
-
+<p>path就是當你路徑為 first-component，就會顯示出這個component，以ng s建立本機為例，<a target="_blank" rel="noopener" href="http://localhost:4200/">http://localhost:4200</a> 是顯示你網頁的地方，而你只要網址輸入<a target="_blank" rel="noopener" href="http://localhost:4200/first-component%EF%BC%8C%E7%B6%B2%E9%A0%81%E5%B0%B1%E6%9C%83%E9%A1%AF%E7%A4%BA%E5%87%BA%E4%BD%A0%E7%9A%84component">http://localhost:4200/first-component，網頁就會顯示出你的component</a></p>
 <p>app.component.html換成</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;Angular Router App&lt;/h1&gt;</span><br><span class="line">&lt;nav&gt;</span><br><span class="line">  &lt;ul&gt;</span><br><span class="line">    &lt;li&gt;&lt;a routerLink=&quot;/first-component&quot; routerLinkActive=&quot;active&quot; ariaCurrentWhenActive=&quot;page&quot;&gt;First Component&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;&lt;a routerLink=&quot;/second-component&quot; routerLinkActive=&quot;active&quot; ariaCurrentWhenActive=&quot;page&quot;&gt;Second Component&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">  &lt;/ul&gt;</span><br><span class="line">&lt;/nav&gt;</span><br><span class="line">&lt;router-outlet&gt;&lt;/router-outlet&gt;</span><br></pre></td></tr></table></figure>
-<p>再要連結的元素中加入，<strong>routerLink</strong>，後面加上在routes設定的路徑</p>
+<p>再要連結的元素中加入，<strong>routerLink</strong>，後面加上在routes設定的路徑，這邊設定的路徑就是你剛剛在app-routing.modules.ts Routes中設定的path，就可以點擊超連結就顯示該component。</p>
+<h4 id="設定萬用路徑以及預設路徑"><a href="#設定萬用路徑以及預設路徑" class="headerlink" title="設定萬用路徑以及預設路徑"></a>設定萬用路徑以及預設路徑</h4><p>前面有提到可以在Routes中設定path，而你如果把路徑設定成 <strong>path: ‘’</strong> ，就可以變成預設的路徑，也就是剛進到 <a target="_blank" rel="noopener" href="http://localhost:4200/">http://localhost:4200</a> ，就會直接顯示指定的component，<br>那也可以在裡面加上 redirectTo ，來指定預設導向的路徑，像是原本有 first以及second兩個元件，那你可以redirectTo到他們的path就會有預設該元件顯示的效果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const routes: Routes = [</span><br><span class="line">  &#123; path: &#x27;first-component&#x27;, component: FirstComponent&#125;,</span><br><span class="line">  &#123; path: &#x27;second-component&#x27;, component: SecondComponent &#125;,</span><br><span class="line">  &#123; path: &#x27;&#x27;, redirectTo: &#x27;first-component&#x27;, pathMatch: &#x27;full&#x27;&#125;,</span><br><span class="line">  // 將預設設定成first元件顯示</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
 <p>未完待補</p>
 
       
@@ -245,16 +254,16 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">نُشر في</span>
 
-              <time title="Erstellt: 2023-09-08 09:25:05" itemprop="dateCreated datePublished" datetime="2023-09-08T09:25:05+08:00">2023-09-08</time>
+              <time title="أُنشأ: 2023-09-08 09:25:05" itemprop="dateCreated datePublished" datetime="2023-09-08T09:25:05+08:00">2023-09-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Bearbeitet am</span>
-                <time title="Geändert am: 2023-09-11 10:16:37" itemprop="dateModified" datetime="2023-09-11T10:16:37+08:00">2023-09-11</time>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2023-09-11 10:16:37" itemprop="dateModified" datetime="2023-09-11T10:16:37+08:00">2023-09-11</time>
               </span>
 
           
@@ -327,16 +336,16 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">نُشر في</span>
 
-              <time title="Erstellt: 2023-09-07 13:35:32" itemprop="dateCreated datePublished" datetime="2023-09-07T13:35:32+08:00">2023-09-07</time>
+              <time title="أُنشأ: 2023-09-07 13:35:32" itemprop="dateCreated datePublished" datetime="2023-09-07T13:35:32+08:00">2023-09-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Bearbeitet am</span>
-                <time title="Geändert am: 2023-09-08 14:08:33" itemprop="dateModified" datetime="2023-09-08T14:08:33+08:00">2023-09-08</time>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2023-09-08 14:08:33" itemprop="dateModified" datetime="2023-09-08T14:08:33+08:00">2023-09-08</time>
               </span>
 
           
@@ -410,10 +419,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Inhaltsverzeichnis
+          المحتويات
         </li>
         <li class="sidebar-nav-overview">
-          Übersicht
+          عام
         </li>
       </ul>
 
@@ -433,7 +442,7 @@
           <a href="/archives/">
         
           <span class="site-state-item-count">3</span>
-          <span class="site-state-item-name">Artikel</span>
+          <span class="site-state-item-name">المقالات</span>
         </a>
       </div>
   </nav>
@@ -466,7 +475,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">John Doe</span>
 </div>
-  <div class="powered-by">Erstellt mit  <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
         
