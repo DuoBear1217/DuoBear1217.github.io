@@ -81,7 +81,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="Navigationsleiste an/ausschalten">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -110,12 +110,12 @@
   <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
 
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Startseite</a>
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
 
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archiv</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
 
   </li>
   </ul>
@@ -145,6 +145,78 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/14/AngularRouting-part2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Duo 學習雜記">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/14/AngularRouting-part2/" class="post-title-link" itemprop="url">AngularRouting - part2</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+              
+
+              <time title="أُنشأ: 2023-09-14 11:01:25 / عُدل: 14:03:19" itemprop="dateCreated datePublished" datetime="2023-09-14T11:01:25+08:00">2023-09-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Angular路由-part2"><a href="#Angular路由-part2" class="headerlink" title="Angular路由 - part2"></a>Angular路由 - part2</h1><p>上次講到了簡易設定路由的部分<br>這次來簡單講講 延遲載入 以及 子路由的部分</p>
+<p>當我們的網站越來越大，而angular又是SPA模式的網頁，在進入網頁時的載入一定會變緩慢，進而影響到使用者的使用<br>這時候就會需要延遲載入。<br>延遲載入會在使用者觸發路由後才會載入該內容</p>
+<h2 id="延遲載入-LazyLoad"><a href="#延遲載入-LazyLoad" class="headerlink" title="延遲載入(LazyLoad)"></a>延遲載入(LazyLoad)</h2><p>前面有提到需要使用routes中來設定路徑以及要顯示的component，而在這邊若是加入的loadChild，就可以套用延遲載入<br>使用的方式如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const routes: Routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#x27;lazy1&#x27;,</span><br><span class="line">    loadChildren: () =&gt;</span><br><span class="line">      import(&#x27;./lazy1/lazy1.module&#x27;).then((m) =&gt; m.Lazy1Module),</span><br><span class="line">  &#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>裡頭加上import到元件的module，在這樣做之前，需要先把component裡面添加一個模組的程式<br>可以去複製 app.module.ts ，然後把檔案放在該component的資料夾中，並改名 componentName.module.ts<br>同時也複製一份app-routing.module.ts到該component資料夾中，也改名為componentName-routing.module.ts</p>
+<p>然後把componentName.module.ts的imports加上componentName-routing.module.ts。<br>這樣才能把你新創的子路由模組註冊進去<br>我創立的component名稱是lazy1所以這邊就使用lazy1來取代componentName</p>
+<h5 id="lazy1-module-ts"><a href="#lazy1-module-ts" class="headerlink" title="lazy1.module.ts"></a>lazy1.module.ts</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import &#123; NgModule &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line">import &#123; CommonModule &#125; from &#x27;@angular/common&#x27;;</span><br><span class="line">import &#123; Lazy1RoutingModule &#125; from &#x27;./lzay1-routing.module&#x27;;</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  declarations: [],</span><br><span class="line">  imports: [</span><br><span class="line">    CommonModule,</span><br><span class="line">    Lazy1RoutingModule</span><br><span class="line">  ] \\ 將你創的routing模組加入，這樣藉由路由導轉到這邊時才可以認出你創的的routing模組</span><br><span class="line">&#125;)</span><br><span class="line">export class Lazy1Module &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="lazy1-routing-module-ts"><a href="#lazy1-routing-module-ts" class="headerlink" title="lazy1-routing.module.ts"></a>lazy1-routing.module.ts</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import &#123; NgModule &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line">import &#123; RouterModule, Routes &#125; from &#x27;@angular/router&#x27;;</span><br><span class="line">import &#123; Lazy1Component &#125; from &#x27;./lazy1.component&#x27;;</span><br><span class="line"></span><br><span class="line">const routes: Routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#x27;&#x27;,</span><br><span class="line">    component: Lazy1Component</span><br><span class="line">  &#125; // 將Lazy1的component設定成預設顯示</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  imports: [RouterModule.forChild(routes)], // 這邊和app-routing.module.ts不一樣的部分是，因為路由模組已經有建立一個forRoot的，這邊使用forChild就可以註冊上去路由，不會再次建立一次路由模組而造成錯誤</span><br><span class="line">  exports: [RouterModule]</span><br><span class="line">&#125;)</span><br><span class="line">export class Lazy1RoutingModule &#123; &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>這樣在你開啟網頁的時候lazy1就不會立刻顯示，在你導向到 ‘&#x2F;lazy1’ 的時後才會載入lazy1的內容<br>這是延遲載入的方式</p>
+<h2 id="預先載入"><a href="#預先載入" class="headerlink" title="預先載入"></a>預先載入</h2><p>另外angular也有提供自己的提前載入PreloadAllModules<br>需要引入 preloadingStrategy 有預先載入後，讓使用者在使用上不會有卡頓的感覺。<br>在路由模組下，forRoot(routes, {preloadingStrategy : PreloadAllModules})<br>就可以預先載入所有模組<br>也有可以指定載入部分模組，可以自製，但目前還沒有摸索到，之後若有再補充上</p>
+<h2 id="子路由"><a href="#子路由" class="headerlink" title="子路由"></a>子路由</h2><p>很多網頁都會有分類後導向到該分類，然後該分類中又有許多細項，用子路由就可以實現這個操作<br>拿最上面的Routes來看看，我們需要在路由下多加上一個 children: []，裡面的路由寫法和原本的寫法一樣<br>這樣就可以有子路由了， &#x2F;lazy1&#x2F;childA 就可以導轉到childA元件，改B就可以換到childB元件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const routes: Routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#x27;lazy1&#x27;,</span><br><span class="line">    loadChildren: () =&gt;</span><br><span class="line">      import(&#x27;./lazy1/lazy1.module&#x27;).then((m) =&gt; m.Lazy1Module),</span><br><span class="line">    children: [</span><br><span class="line">      &#123; path: &#x27;childA&#x27;, component: childAComponent &#125;,</span><br><span class="line">      &#123; path: &#x27;childB&#x27;, component: childBComponent &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/11/AngularRouting/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -159,7 +231,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/2023/09/11/AngularRouting/" class="post-title-link" itemprop="url">AngularRouting</a>
+            <a href="/2023/09/11/AngularRouting/" class="post-title-link" itemprop="url">AngularRouting - part1</a>
         </h2>
 
         <div class="post-meta">
@@ -167,16 +239,16 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">نُشر في</span>
 
-              <time title="Erstellt: 2023-09-11 17:14:47" itemprop="dateCreated datePublished" datetime="2023-09-11T17:14:47+08:00">2023-09-11</time>
+              <time title="أُنشأ: 2023-09-11 17:14:47" itemprop="dateCreated datePublished" datetime="2023-09-11T17:14:47+08:00">2023-09-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Bearbeitet am</span>
-                <time title="Geändert am: 2023-09-12 09:21:29" itemprop="dateModified" datetime="2023-09-12T09:21:29+08:00">2023-09-12</time>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2023-09-14 11:03:52" itemprop="dateModified" datetime="2023-09-14T11:03:52+08:00">2023-09-14</time>
               </span>
 
           
@@ -190,7 +262,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="Angular路由"><a href="#Angular路由" class="headerlink" title="Angular路由"></a>Angular路由</h1><p>首先要先簡單了解一下SPA以及MPA</p>
+          <h1 id="Angular路由-part1"><a href="#Angular路由-part1" class="headerlink" title="Angular路由 - part1"></a>Angular路由 - part1</h1><p>首先要先簡單了解一下SPA以及MPA</p>
 <h4 id="SPA-single-page-Application-單頁面應用"><a href="#SPA-single-page-Application-單頁面應用" class="headerlink" title="SPA (single-page Application) 單頁面應用"></a>SPA (single-page Application) 單頁面應用</h4><p>優: 響應速度快、行動裝置友善，便利性高<br>缺: SEO(Search Engine Optimization)不佳，安全性問題，擴展性不佳，沒有瀏覽紀錄</p>
 <h4 id="MPA-muti-page-Application-多頁面應用"><a href="#MPA-muti-page-Application-多頁面應用" class="headerlink" title="MPA (muti-page Application) 多頁面應用"></a>MPA (muti-page Application) 多頁面應用</h4><p>優: SEO，搜尋引擎優化友善，可擴展性佳，容易分析<br>缺: 速度慢，開發時長久，維護上不易</p>
 <p>而Angular是屬於SPA的</p>
@@ -208,7 +280,7 @@
 <p>path就是當你路徑為 first-component，就會顯示出這個component，以ng s建立本機為例，<a target="_blank" rel="noopener" href="http://localhost:4200/">http://localhost:4200</a> 是顯示你網頁的地方，而你只要網址輸入<a target="_blank" rel="noopener" href="http://localhost:4200/first-component%EF%BC%8C%E7%B6%B2%E9%A0%81%E5%B0%B1%E6%9C%83%E9%A1%AF%E7%A4%BA%E5%87%BA%E4%BD%A0%E7%9A%84component">http://localhost:4200/first-component，網頁就會顯示出你的component</a></p>
 <p>app.component.html換成</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;h1&gt;Angular Router App&lt;/h1&gt;</span><br><span class="line">&lt;nav&gt;</span><br><span class="line">  &lt;ul&gt;</span><br><span class="line">    &lt;li&gt;&lt;a routerLink=&quot;/first-component&quot; routerLinkActive=&quot;active&quot; ariaCurrentWhenActive=&quot;page&quot;&gt;First Component&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">    &lt;li&gt;&lt;a routerLink=&quot;/second-component&quot; routerLinkActive=&quot;active&quot; ariaCurrentWhenActive=&quot;page&quot;&gt;Second Component&lt;/a&gt;&lt;/li&gt;</span><br><span class="line">  &lt;/ul&gt;</span><br><span class="line">&lt;/nav&gt;</span><br><span class="line">&lt;router-outlet&gt;&lt;/router-outlet&gt;</span><br></pre></td></tr></table></figure>
-<p>再要連結的元素中加入，<strong>routerLink</strong>，後面加上在routes設定的路徑，這邊設定的路徑就是你剛剛在app-routing.modules.ts Routes中設定的path，就可以點擊超連結就顯示該component。</p>
+<p>再要連結的元素中加入，<strong>routerLink</strong>，後面加上在routes設定的路徑，這邊設定的路徑就是你剛剛在app-routing.modules.ts Routes中設定的path，就可以點擊超連結就顯示該component。<br>router-outlet則是會顯示元件內容的地方</p>
 <h4 id="設定萬用路徑以及預設路徑"><a href="#設定萬用路徑以及預設路徑" class="headerlink" title="設定萬用路徑以及預設路徑"></a>設定萬用路徑以及預設路徑</h4><h5 id="預設路徑"><a href="#預設路徑" class="headerlink" title="預設路徑"></a>預設路徑</h5><p>前面有提到可以在Routes中設定path，而你如果把路徑設定成 <strong>path: ‘’</strong> ，就可以變成預設的路徑，也就是剛進到 <a target="_blank" rel="noopener" href="http://localhost:4200/">http://localhost:4200</a> ，就會直接顯示指定的component，<br>那也可以在裡面加上 redirectTo ，來指定預設導向的路徑，像是原本有 first以及second兩個元件，那你可以redirectTo到他們的path就會有預設該元件顯示的效果</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const routes: Routes = [</span><br><span class="line">  &#123; path: &#x27;first-component&#x27;, component: FirstComponent&#125;,</span><br><span class="line">  &#123; path: &#x27;second-component&#x27;, component: SecondComponent &#125;,</span><br><span class="line">  &#123; path: &#x27;&#x27;, redirectTo: &#x27;first-component&#x27;, pathMatch: &#x27;full&#x27;&#125;,</span><br><span class="line">  // 將預設設定成first元件顯示</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
 
@@ -260,16 +332,16 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">نُشر في</span>
 
-              <time title="Erstellt: 2023-09-08 09:25:05" itemprop="dateCreated datePublished" datetime="2023-09-08T09:25:05+08:00">2023-09-08</time>
+              <time title="أُنشأ: 2023-09-08 09:25:05" itemprop="dateCreated datePublished" datetime="2023-09-08T09:25:05+08:00">2023-09-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Bearbeitet am</span>
-                <time title="Geändert am: 2023-09-11 10:16:37" itemprop="dateModified" datetime="2023-09-11T10:16:37+08:00">2023-09-11</time>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2023-09-11 10:16:37" itemprop="dateModified" datetime="2023-09-11T10:16:37+08:00">2023-09-11</time>
               </span>
 
           
@@ -342,16 +414,16 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">نُشر في</span>
 
-              <time title="Erstellt: 2023-09-07 13:35:32" itemprop="dateCreated datePublished" datetime="2023-09-07T13:35:32+08:00">2023-09-07</time>
+              <time title="أُنشأ: 2023-09-07 13:35:32" itemprop="dateCreated datePublished" datetime="2023-09-07T13:35:32+08:00">2023-09-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">Bearbeitet am</span>
-                <time title="Geändert am: 2023-09-08 14:08:33" itemprop="dateModified" datetime="2023-09-08T14:08:33+08:00">2023-09-08</time>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2023-09-08 14:08:33" itemprop="dateModified" datetime="2023-09-08T14:08:33+08:00">2023-09-08</time>
               </span>
 
           
@@ -425,10 +497,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          Inhaltsverzeichnis
+          المحتويات
         </li>
         <li class="sidebar-nav-overview">
-          Übersicht
+          عام
         </li>
       </ul>
 
@@ -447,8 +519,8 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
-          <span class="site-state-item-name">Artikel</span>
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">المقالات</span>
         </a>
       </div>
   </nav>
@@ -481,7 +553,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">John Doe</span>
 </div>
-  <div class="powered-by">Erstellt mit  <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
         

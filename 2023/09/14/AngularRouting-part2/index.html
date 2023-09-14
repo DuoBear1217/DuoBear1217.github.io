@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="Angular路由 - part2上次講到了簡易設定路由的部分這次來簡單講講 延遲載入 以及 子路由的部分 當我們的網站越來越大，而angular又是SPA模式的網頁，在進入網頁時的載入一定會變緩慢，進而影響到使用者的使用這時候就會需要延遲載入。延遲載入會在使用者觸發路由後才會載入該內容 延遲載入(LazyLoad)前面有提到需要使用routes中來設定路徑以及要顯示的component，而在這邊">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AngularRouting - part2">
+<meta property="og:url" content="http://example.com/2023/09/14/AngularRouting-part2/index.html">
+<meta property="og:site_name" content="Duo 學習雜記">
+<meta property="og:description" content="Angular路由 - part2上次講到了簡易設定路由的部分這次來簡單講講 延遲載入 以及 子路由的部分 當我們的網站越來越大，而angular又是SPA模式的網頁，在進入網頁時的載入一定會變緩慢，進而影響到使用者的使用這時候就會需要延遲載入。延遲載入會在使用者觸發路由後才會載入該內容 延遲載入(LazyLoad)前面有提到需要使用routes中來設定路徑以及要顯示的component，而在這邊">
+<meta property="og:locale" content="zh_TW">
+<meta property="article:published_time" content="2023-09-14T03:01:25.000Z">
+<meta property="article:modified_time" content="2023-09-14T06:03:19.022Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/2023/09/14/AngularRouting-part2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-tw'
+  };
+</script>
+
+  <title>AngularRouting - part2 | Duo 學習雜記</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="تشغيل شريط التصفح">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Duo 學習雜記</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/14/AngularRouting-part2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Duo 學習雜記">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AngularRouting - part2
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+              
+
+              <time title="أُنشأ: 2023-09-14 11:01:25 / عُدل: 14:03:19" itemprop="dateCreated datePublished" datetime="2023-09-14T11:01:25+08:00">2023-09-14</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Angular路由-part2"><a href="#Angular路由-part2" class="headerlink" title="Angular路由 - part2"></a>Angular路由 - part2</h1><p>上次講到了簡易設定路由的部分<br>這次來簡單講講 延遲載入 以及 子路由的部分</p>
+<p>當我們的網站越來越大，而angular又是SPA模式的網頁，在進入網頁時的載入一定會變緩慢，進而影響到使用者的使用<br>這時候就會需要延遲載入。<br>延遲載入會在使用者觸發路由後才會載入該內容</p>
+<h2 id="延遲載入-LazyLoad"><a href="#延遲載入-LazyLoad" class="headerlink" title="延遲載入(LazyLoad)"></a>延遲載入(LazyLoad)</h2><p>前面有提到需要使用routes中來設定路徑以及要顯示的component，而在這邊若是加入的loadChild，就可以套用延遲載入<br>使用的方式如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const routes: Routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#x27;lazy1&#x27;,</span><br><span class="line">    loadChildren: () =&gt;</span><br><span class="line">      import(&#x27;./lazy1/lazy1.module&#x27;).then((m) =&gt; m.Lazy1Module),</span><br><span class="line">  &#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>裡頭加上import到元件的module，在這樣做之前，需要先把component裡面添加一個模組的程式<br>可以去複製 app.module.ts ，然後把檔案放在該component的資料夾中，並改名 componentName.module.ts<br>同時也複製一份app-routing.module.ts到該component資料夾中，也改名為componentName-routing.module.ts</p>
+<p>然後把componentName.module.ts的imports加上componentName-routing.module.ts。<br>這樣才能把你新創的子路由模組註冊進去<br>我創立的component名稱是lazy1所以這邊就使用lazy1來取代componentName</p>
+<h5 id="lazy1-module-ts"><a href="#lazy1-module-ts" class="headerlink" title="lazy1.module.ts"></a>lazy1.module.ts</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import &#123; NgModule &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line">import &#123; CommonModule &#125; from &#x27;@angular/common&#x27;;</span><br><span class="line">import &#123; Lazy1RoutingModule &#125; from &#x27;./lzay1-routing.module&#x27;;</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  declarations: [],</span><br><span class="line">  imports: [</span><br><span class="line">    CommonModule,</span><br><span class="line">    Lazy1RoutingModule</span><br><span class="line">  ] \\ 將你創的routing模組加入，這樣藉由路由導轉到這邊時才可以認出你創的的routing模組</span><br><span class="line">&#125;)</span><br><span class="line">export class Lazy1Module &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="lazy1-routing-module-ts"><a href="#lazy1-routing-module-ts" class="headerlink" title="lazy1-routing.module.ts"></a>lazy1-routing.module.ts</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import &#123; NgModule &#125; from &#x27;@angular/core&#x27;;</span><br><span class="line">import &#123; RouterModule, Routes &#125; from &#x27;@angular/router&#x27;;</span><br><span class="line">import &#123; Lazy1Component &#125; from &#x27;./lazy1.component&#x27;;</span><br><span class="line"></span><br><span class="line">const routes: Routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#x27;&#x27;,</span><br><span class="line">    component: Lazy1Component</span><br><span class="line">  &#125; // 將Lazy1的component設定成預設顯示</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line">@NgModule(&#123;</span><br><span class="line">  imports: [RouterModule.forChild(routes)], // 這邊和app-routing.module.ts不一樣的部分是，因為路由模組已經有建立一個forRoot的，這邊使用forChild就可以註冊上去路由，不會再次建立一次路由模組而造成錯誤</span><br><span class="line">  exports: [RouterModule]</span><br><span class="line">&#125;)</span><br><span class="line">export class Lazy1RoutingModule &#123; &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>這樣在你開啟網頁的時候lazy1就不會立刻顯示，在你導向到 ‘&#x2F;lazy1’ 的時後才會載入lazy1的內容<br>這是延遲載入的方式</p>
+<h2 id="預先載入"><a href="#預先載入" class="headerlink" title="預先載入"></a>預先載入</h2><p>另外angular也有提供自己的提前載入PreloadAllModules<br>需要引入 preloadingStrategy 有預先載入後，讓使用者在使用上不會有卡頓的感覺。<br>在路由模組下，forRoot(routes, {preloadingStrategy : PreloadAllModules})<br>就可以預先載入所有模組<br>也有可以指定載入部分模組，可以自製，但目前還沒有摸索到，之後若有再補充上</p>
+<h2 id="子路由"><a href="#子路由" class="headerlink" title="子路由"></a>子路由</h2><p>很多網頁都會有分類後導向到該分類，然後該分類中又有許多細項，用子路由就可以實現這個操作<br>拿最上面的Routes來看看，我們需要在路由下多加上一個 children: []，裡面的路由寫法和原本的寫法一樣<br>這樣就可以有子路由了， &#x2F;lazy1&#x2F;childA 就可以導轉到childA元件，改B就可以換到childB元件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const routes: Routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#x27;lazy1&#x27;,</span><br><span class="line">    loadChildren: () =&gt;</span><br><span class="line">      import(&#x27;./lazy1/lazy1.module&#x27;).then((m) =&gt; m.Lazy1Module),</span><br><span class="line">    children: [</span><br><span class="line">      &#123; path: &#x27;childA&#x27;, component: childAComponent &#125;,</span><br><span class="line">      &#123; path: &#x27;childB&#x27;, component: childBComponent &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/09/11/AngularRouting/" rel="prev" title="AngularRouting - part1">
+      <i class="fa fa-chevron-left"></i> AngularRouting - part1
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          المحتويات
+        </li>
+        <li class="sidebar-nav-overview">
+          عام
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Angular%E8%B7%AF%E7%94%B1-part2"><span class="nav-number">1.</span> <span class="nav-text">Angular路由 - part2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BB%B6%E9%81%B2%E8%BC%89%E5%85%A5-LazyLoad"><span class="nav-number">1.1.</span> <span class="nav-text">延遲載入(LazyLoad)</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#lazy1-module-ts"><span class="nav-number">1.1.0.0.1.</span> <span class="nav-text">lazy1.module.ts</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#lazy1-routing-module-ts"><span class="nav-number">1.1.0.0.2.</span> <span class="nav-text">lazy1-routing.module.ts</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A0%90%E5%85%88%E8%BC%89%E5%85%A5"><span class="nav-number">1.2.</span> <span class="nav-text">預先載入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%90%E8%B7%AF%E7%94%B1"><span class="nav-number">1.3.</span> <span class="nav-text">子路由</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">John Doe</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">المقالات</span>
+        </a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+</div>
+  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
