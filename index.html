@@ -81,7 +81,7 @@
     <header class="header" itemscope itemtype="http://schema.org/WPHeader">
       <div class="header-inner"><div class="site-brand-container">
   <div class="site-nav-toggle">
-    <div class="toggle" aria-label="تشغيل شريط التصفح">
+    <div class="toggle" aria-label="Toggle navigation bar">
       <span class="toggle-line toggle-line-first"></span>
       <span class="toggle-line toggle-line-middle"></span>
       <span class="toggle-line toggle-line-last"></span>
@@ -115,7 +115,7 @@
   </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>الأرشيفات</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
 
   </li>
   </ul>
@@ -145,6 +145,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/19/AngularRouting-part3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Duo 學習雜記">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/19/AngularRouting-part3/" class="post-title-link" itemprop="url">AngularRouting - part3</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-09-19 11:00:58 / Modified: 14:11:29" itemprop="dateCreated datePublished" datetime="2023-09-19T11:00:58+08:00">2023-09-19</time>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Angular路由-part3"><a href="#Angular路由-part3" class="headerlink" title="Angular路由 - part3"></a>Angular路由 - part3</h1><p>之前簡單的介紹了angular的一些route的內容，今天來介紹許多網站都會有的guard功能<br>在登入前你可能會沒有辦法前往會員中心，又或者是購物你在填寫付款資料完成前沒辦法到訂單詳情</p>
+<h4 id="路由守衛-angular-guard"><a href="#路由守衛-angular-guard" class="headerlink" title="路由守衛 (angular guard)"></a>路由守衛 (angular guard)</h4><p>angular的guard可以由CLI指令產生</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng generate guard guardName</span><br></pre></td></tr></table></figure>
+<p>guardName 輸入你想要的guard名稱<br>接著會詢問你要產生那個guard檔案，請先選擇 CanActivate 這個產生</p>
+<p>產生的檔案就會如下，這邊列的是使用 Angular 15<br>angular 16 和之前差別的內容，可以參考這篇文章<br>[<a target="_blank" rel="noopener" href="https://www.fradev.io/articles/angular/new-angular-v16-functional-guards]">https://www.fradev.io/articles/angular/new-angular-v16-functional-guards]</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">export class AuthGuard implements CanActivate &#123;</span><br><span class="line"></span><br><span class="line">  constructor(private userService: UserService)&#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  canActivate(</span><br><span class="line">    route: ActivatedRouteSnapshot,</span><br><span class="line">    state: RouterStateSnapshot): Observable&lt;boolean | UrlTree&gt; | Promise&lt;boolean | UrlTree&gt; | boolean | UrlTree &#123;</span><br><span class="line">      return true;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>預設參數，但由於認識還不深究就簡單介紹了解到的功能</p>
+<h6 id="route-ActivatedRouteSnapshot"><a href="#route-ActivatedRouteSnapshot" class="headerlink" title="route: ActivatedRouteSnapshot"></a>route: ActivatedRouteSnapshot</h6><p>獲取到路徑的參數、數據，可以用作路由檢查的用途</p>
+<h6 id="state-RouterStateSnapshot"><a href="#state-RouterStateSnapshot" class="headerlink" title="state: RouterStateSnapshot"></a>state: RouterStateSnapshot</h6><p>檢查所有路由當前的情況</p>
+<p>而現在建立好了，要如何使用這個guard<br>需要回到app-routing.modules.ts來使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">const routes: Routes = [</span><br><span class="line">  &#123;</span><br><span class="line">    path: &#x27;membercenter&#x27;,</span><br><span class="line">    component: MemberCenterComponent,</span><br><span class="line">    canActivate: [AuthGuard]</span><br><span class="line">  &#125;,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+<p>需要放在之前有提到的Routes裡面<br>看你使用的是哪一種就打上，像這次先使用的是canActivate<br>就打上 canActivate: [guardName]<br>這樣當你在使用 membercenter這個路徑的時候，就會先去guard檢查是否符合進入條件</p>
+<p>而guard會返回布林值，若是返回true就會可以通行，若返回false就會被阻擋下來<br>那我們現在canActivate方法裡面是返回true<br>所以當你在route加上這段guard會發現還沒有任何作用</p>
+<p>現在可以在裡面加上一些檢驗的操作</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">canActivate(</span><br><span class="line">  route: ActivatedRouteSnapshot,</span><br><span class="line">  state: RouterStateSnapshot): Observable&lt;boolean | UrlTree&gt; | Promise&lt;boolean | UrlTree&gt; | boolean | UrlTree &#123;</span><br><span class="line">    if (this.userService.checkUser()) &#123;</span><br><span class="line">      return true;</span><br><span class="line">    &#125;</span><br><span class="line">    return false;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>像現在就是使用service中的檢驗使用者的方法，userService是我自己訂的，其中checkUser方法會檢查是否符合，若符合就會返回true<br>類似這樣就可以做到登入的阻擋功能</p>
+<p>那現在介紹完guard的功能，來了解一下guard的分類</p>
+<p>Angular有提供這四種guard</p>
+<ul>
+<li>CanActivate<br>除了Resolve比較沒那麼直觀，其他都可以透過字面意思來了解一二<br>CanActivate就是允許符合路由條件的時候就可以跳轉到該路由上<br>要是使用者沒有登入或者沒有達成某些設定條件就無法進入該路由</li>
+</ul>
+<p>個別程式碼和Routes中設定日後補上</p>
+<ul>
+<li><p>CanActivateChild<br>CanActivateChild則是為了給子路由使用的，基本上用法和CanActivate一樣</p>
+</li>
+<li><p>CanDeactivate<br>CanDeactivate則是反過來，會使得人無法離開該頁面，若是需要填寫付款資料等等的表單資料，但卻沒有填寫完全就跳轉到其他地方<br>為了防止這種情況就可以使用CanDeactivate</p>
+</li>
+<li><p>CanLoad<br>CanLoad就是在某些特定權限只會開放給管理職的使用，就可以限定只有符合條件的可以載入指定的模組<br>後台管理系統，若非高階管理職則有些功能模組需要阻止被載入</p>
+</li>
+<li><p>CanMatch<br>CanMatch則是要確認都符合所有的guard若沒有則仍然會導轉，但因為不符合條件，所以會跳轉到**萬用路徑</p>
+</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/14/AngularRouting-part2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -167,10 +258,10 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">نُشر في</span>
+              <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="أُنشأ: 2023-09-14 11:01:25 / عُدل: 14:03:19" itemprop="dateCreated datePublished" datetime="2023-09-14T11:01:25+08:00">2023-09-14</time>
+              <time title="Created: 2023-09-14 11:01:25 / Modified: 14:03:19" itemprop="dateCreated datePublished" datetime="2023-09-14T11:01:25+08:00">2023-09-14</time>
             </span>
 
           
@@ -239,16 +330,16 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">نُشر في</span>
+              <span class="post-meta-item-text">Posted on</span>
 
-              <time title="أُنشأ: 2023-09-11 17:14:47" itemprop="dateCreated datePublished" datetime="2023-09-11T17:14:47+08:00">2023-09-11</time>
+              <time title="Created: 2023-09-11 17:14:47" itemprop="dateCreated datePublished" datetime="2023-09-11T17:14:47+08:00">2023-09-11</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">عُدل في</span>
-                <time title="عُدل: 2023-09-14 11:03:52" itemprop="dateModified" datetime="2023-09-14T11:03:52+08:00">2023-09-14</time>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-09-14 11:03:52" itemprop="dateModified" datetime="2023-09-14T11:03:52+08:00">2023-09-14</time>
               </span>
 
           
@@ -332,16 +423,16 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">نُشر في</span>
+              <span class="post-meta-item-text">Posted on</span>
 
-              <time title="أُنشأ: 2023-09-08 09:25:05" itemprop="dateCreated datePublished" datetime="2023-09-08T09:25:05+08:00">2023-09-08</time>
+              <time title="Created: 2023-09-08 09:25:05" itemprop="dateCreated datePublished" datetime="2023-09-08T09:25:05+08:00">2023-09-08</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">عُدل في</span>
-                <time title="عُدل: 2023-09-11 10:16:37" itemprop="dateModified" datetime="2023-09-11T10:16:37+08:00">2023-09-11</time>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-09-11 10:16:37" itemprop="dateModified" datetime="2023-09-11T10:16:37+08:00">2023-09-11</time>
               </span>
 
           
@@ -414,16 +505,16 @@
               <span class="post-meta-item-icon">
                 <i class="far fa-calendar"></i>
               </span>
-              <span class="post-meta-item-text">نُشر في</span>
+              <span class="post-meta-item-text">Posted on</span>
 
-              <time title="أُنشأ: 2023-09-07 13:35:32" itemprop="dateCreated datePublished" datetime="2023-09-07T13:35:32+08:00">2023-09-07</time>
+              <time title="Created: 2023-09-07 13:35:32" itemprop="dateCreated datePublished" datetime="2023-09-07T13:35:32+08:00">2023-09-07</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
-                <span class="post-meta-item-text">عُدل في</span>
-                <time title="عُدل: 2023-09-08 14:08:33" itemprop="dateModified" datetime="2023-09-08T14:08:33+08:00">2023-09-08</time>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-09-08 14:08:33" itemprop="dateModified" datetime="2023-09-08T14:08:33+08:00">2023-09-08</time>
               </span>
 
           
@@ -497,10 +588,10 @@
 
       <ul class="sidebar-nav motion-element">
         <li class="sidebar-nav-toc">
-          المحتويات
+          Table of Contents
         </li>
         <li class="sidebar-nav-overview">
-          عام
+          Overview
         </li>
       </ul>
 
@@ -519,8 +610,8 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
-          <span class="site-state-item-name">المقالات</span>
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
         </a>
       </div>
   </nav>
@@ -553,7 +644,7 @@
   </span>
   <span class="author" itemprop="copyrightHolder">John Doe</span>
 </div>
-  <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
 
         
