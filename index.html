@@ -25,7 +25,7 @@
 <meta property="og:url" content="http://example.com/index.html">
 <meta property="og:site_name" content="Duo 學習雜記">
 <meta property="og:locale" content="zh_TW">
-<meta property="article:author" content="John Doe">
+<meta property="article:author" content="DuoPlus">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/">
@@ -145,11 +145,94 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/21/AngularIntro-part1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="DuoPlus">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Duo 學習雜記">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/09/21/AngularIntro-part1/" class="post-title-link" itemprop="url">AngularIntro - part1</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">نُشر في</span>
+
+              <time title="أُنشأ: 2023-09-21 11:14:48" itemprop="dateCreated datePublished" datetime="2023-09-21T11:14:48+08:00">2023-09-21</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">عُدل في</span>
+                <time title="عُدل: 2023-09-23 15:58:07" itemprop="dateModified" datetime="2023-09-23T15:58:07+08:00">2023-09-23</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Angular的入門"><a href="#Angular的入門" class="headerlink" title="Angular的入門"></a>Angular的入門</h1><p>angular 產生需要先再電腦安裝Node和angular的installer<br>Node需要去官方下載，不要太舊的版本安裝即可<br>安裝好node後先下指令安裝angular的下載去</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g @angular/cli@版本號</span><br></pre></td></tr></table></figure>
+<p>看需求要使用哪一版的angular在版本號打上<br>-g表示是全域都會安裝</p>
+<p>安裝好安裝器後下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng version</span><br></pre></td></tr></table></figure>
+<p>若有跳出angular並且下方有顯示版本號，那就表示安裝成功了</p>
+<p>在你要放置angular專案的地方打上</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng new 專案名稱</span><br></pre></td></tr></table></figure>
+<p>就可以產生專案了<br>而如果你不需要使用路由設定可以打上 –routing&#x3D;false<br>樣式檔的選擇如果沒有特別學過其他的就選擇css，也可以加上選項 –style&#x3D;css<br>就會變成</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ng new 專案名稱 --routing=false --style=css</span><br></pre></td></tr></table></figure>
+<p>就不會在產生專案的時候還詢問了，會直接產生專案給你，routing改true就是要用路由檔案，routing跟style選項有打上可以跳過詢問你的部分</p>
+<p>產生好專案後，可以使用以下五個指令來產生較為主要使用的組件</p>
+<ul>
+<li>Component (CLI產生: ng g c 名稱)<br>元件，基本上由.css、.html、.ts、.spec.ts組成視需求可加入modules.ts以及routing.</li>
+<li>Direacitve (CLI產生: ng g d 名稱)<br>可以對元素加入事件或者是樣式，但無法放在元件標籤 constructor(private el: ElementRef) { }，El可以獲取該元素，就可以如同JS對該元素操作樣式、事件<br>Ex. el.nativeElement.addEventListener(‘clikc’, func() { })</li>
+<li>Service (CLI產生: ng g s 名稱)<br>有資料共享特性，component之間可以透過依賴注入service來取得資料</li>
+<li>Pipe (CLI產生: ng g p 名稱)<br>資料有時在元素上顯示時需要做過處理，可以使用pipe來處理，例如顯示成年不成年，額外符號等等，不會對資料有實際的變化<br>Ex. { { data | pipeName: 參數 } }</li>
+<li>guard (CLI產生: ng g g 名稱 )<br>在使用路由的時候，有些時候需要路由守衛，阻擋未獲得資格的存取到需被保護的內容</li>
+</ul>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-tw">
     <link itemprop="mainEntityOfPage" href="http://example.com/2023/09/19/AngularRouting-part3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="DuoPlus">
       <meta itemprop="description" content="">
     </span>
 
@@ -241,7 +324,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="DuoPlus">
       <meta itemprop="description" content="">
     </span>
 
@@ -313,7 +396,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="DuoPlus">
       <meta itemprop="description" content="">
     </span>
 
@@ -406,7 +489,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="DuoPlus">
       <meta itemprop="description" content="">
     </span>
 
@@ -488,7 +571,7 @@
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="John Doe">
+      <meta itemprop="name" content="DuoPlus">
       <meta itemprop="description" content="">
     </span>
 
@@ -603,7 +686,7 @@
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-  <p class="site-author-name" itemprop="name">John Doe</p>
+  <p class="site-author-name" itemprop="name">DuoPlus</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap motion-element">
@@ -611,7 +694,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-count">6</span>
           <span class="site-state-item-name">المقالات</span>
         </a>
       </div>
@@ -643,7 +726,7 @@
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
-  <span class="author" itemprop="copyrightHolder">John Doe</span>
+  <span class="author" itemprop="copyrightHolder">DuoPlus</span>
 </div>
   <div class="powered-by">تطبيق الموقع <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://pisces.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Pisces</a>
   </div>
